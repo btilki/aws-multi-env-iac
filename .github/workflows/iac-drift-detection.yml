@@ -1,0 +1,28 @@
+# Runs scheduled drift detection plans across all environments.
+
+name: iac-drift-detection
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  drift:
+    uses: ./.github/workflows/_terragrunt-run.yml
+    secrets: inherit
+    strategy:
+      matrix:
+        environment: [dev, staging, prod]
+    concurrency:
+      group: drift-${{ matrix.environment }}
+      cancel-in-progress: true
+    with:
+      deployment_environment: ${{ matrix.environment }}
+      working_directory: live/${{ matrix.environment }}
+      terragrunt_command: terragrunt run-all plan --terragrunt-non-interactive --terragrunt-disable-bucket-update -detailed-exitcode -no-color
+      skip_dep_outputs: true

@@ -1,0 +1,5 @@
+# state_bucket_name = "your-unique-tfstate-bucket-name"
+state_bucket_name = "multiplatiacbucket"
+lock_table_name   = "tfstate-locks"
+aws_region        = "eu-central-1"
+project_name      = "multi-iac"

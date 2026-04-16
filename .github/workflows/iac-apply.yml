@@ -1,0 +1,32 @@
+# Applies Terragrunt stacks for a selected environment through CI.
+
+name: iac-apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to apply"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  apply:
+    uses: ./.github/workflows/_terragrunt-run.yml
+    secrets: inherit
+    concurrency:
+      group: apply-${{ github.event.inputs.environment || 'dev' }}
+      cancel-in-progress: false
+    with:
+      deployment_environment: ${{ github.event.inputs.environment || 'dev' }}
+      working_directory: live/${{ github.event.inputs.environment || 'dev' }}
+      terragrunt_command: terragrunt run-all apply --terragrunt-non-interactive --terragrunt-disable-bucket-update -auto-approve -no-color
+      skip_dep_outputs: false
