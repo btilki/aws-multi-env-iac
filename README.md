@@ -24,6 +24,27 @@ This guide is intentionally practical and step-by-step.
   - `.github/workflows/iac-drift-detection.yml`
   - `.github/workflows/_terragrunt-run.yml` (shared runner)
 
+## Repository layout
+
+```text
+.
+├── bootstrap/
+├── modules/
+│   ├── networking/
+│   ├── compute/
+│   └── databases/
+├── live/
+│   ├── root.hcl
+│   ├── dev/
+│   ├── staging/
+│   └── prod/
+├── docs/
+│   ├── state-strategy.md
+│   ├── environment-promotion.md
+│   └── governance-baseline.md
+└── .github/workflows/
+```
+
 ## Prerequisites
 
 - Terraform `>= 1.6`
@@ -302,27 +323,6 @@ terraform destroy
 - Archive/delete local repository
 
 ---
-
-## Repository layout
-
-```text
-.
-├── bootstrap/
-├── modules/
-│   ├── networking/
-│   ├── compute/
-│   └── databases/
-├── live/
-│   ├── root.hcl
-│   ├── dev/
-│   ├── staging/
-│   └── prod/
-├── docs/
-│   ├── state-strategy.md
-│   ├── environment-promotion.md
-│   └── governance-baseline.md
-└── .github/workflows/
-```
 
 ## Notes and next hardening steps
 
